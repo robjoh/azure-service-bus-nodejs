@@ -1,0 +1,23 @@
+{
+  "name": "azure-service-bus-nodejs",
+  "version": "0.0.1",
+  "description": "Azure Service Bus and Node.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robjoh/azure-service-bus-nodejs.git"
+  },
+  "keywords": [
+    "node.js",
+    "azure"
+  ],
+  "author": "Rob Johnson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robjoh/azure-service-bus-nodejs/issues"
+  },
+  "homepage": "https://github.com/robjoh/azure-service-bus-nodejs"
+}
