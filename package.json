@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/robjoh/azure-service-bus-nodejs",
   "dependencies": {
-    "azure": "~0.6.9-zumo"
+    "azure": "~0.6.9-zumo",
+    "express": "~4.8.4"
   }
 }

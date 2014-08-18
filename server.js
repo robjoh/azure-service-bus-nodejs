@@ -3,37 +3,33 @@
 var namespace = 'azure-service-bus-nodejs',
     accessKey = '[Access key for this namespace]',
     serviceBus = require('./service-bus.js'),
-    http = require('http');
+    http = require('http'),
+    express = require('express');
 
 var client = serviceBus.createClient(namespace, accessKey);
+var app = express();
 
-var server = http.createServer(function(httpReq, httpResp) {
-    if (httpReq.url === '/') {
-        client.getTopics(writeResult);
-    } else {
-        var parts = httpReq.url.split('/');
-        if (parts.length === 2) {
-            client.getSubscriptions(parts[1], writeResult);
-        } else {
-            client.getSubscription(parts[1], parts[2], writeResult);
-        }
-    }
+app.get('/', function(httpReq, httpResp) {
+    client.getTopics(writeResult(httpResp));
+});
 
-    function writeResult(error, result) {
+app.get('/:topic', function(httpReq, httpResp) {
+    client.getSubscriptions(httpReq.params.topic, writeResult(httpResp));
+});
+
+app.get('/:topic/:subscription', function(httpReq, httpResp) {
+    client.getSubscription(httpReq.params.topic, httpReq.params.subscription, writeResult(httpResp));
+});
+
+http.createServer(app).listen(8080);
+
+function writeResult(httpResp) {
+    return function(error, result) {
         if (error) {
-            httpResp.writeHead(500, {'Content-Type': 'application/json'});
-            httpResp.write(JSON.stringify(error, null, 3));
-            httpResp.end();
+            httpResp.status(500).send(error);
             return;
         }
 
-        httpResp.writeHead(200, {'Content-Type': 'application/json'});
-        httpResp.write(JSON.stringify(result, null, 3));
-        httpResp.end();
+        httpResp.status(200).send(result);
     }
-});
-
-server.listen(8080);
-
-
-
+}
